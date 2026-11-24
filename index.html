@@ -248,7 +248,7 @@ function health(D,A){
       else if(A.tasa>0) add('warn','Ahorrás '+pct(A.tasa)+' (meta '+pct(meta2)+')','Probá "pagarte primero": apenas cobrás, separá el '+pct(meta2)+' y viví con el resto.');
       else add('bad','Este mes gastaste más de lo que entró','Faltaron '+money(-A.ahorro)+'. Mirá abajo en qué se fue y recortá primero los gustos.'); }
     if(c.ing>0){ var n=A.nec/c.ing, d=A.deseo/c.ing;
-      if(n>.6) add('warn','Los gastos necesarios son el '+pct(n)+' de lo que ganás','La guía 50/30/20 sugiere que necesidades no pasen del 50%. Revisá vivienda, servicios y cuotas.');
+      if(n>.5) add(n>.65?'bad':'warn','Los gastos necesarios son el '+pct(n)+' de lo que ganás','La guía 50/30/20 sugiere que las necesidades no pasen del 50%. Revisá vivienda, servicios y cuotas.');
       else add('ok','Gastos necesarios: '+pct(n)+' de lo que ganás','Dentro de un rango sano (guía: hasta 50%).');
       if(d>.35) add('warn','Los gustos son el '+pct(d)+' de lo que ganás','La guía sugiere hasta 30%. Elegí 1 o 2 categorías para bajar este mes.');
       var de=A.deudas/c.ing; if(de>.3) add('bad','Las cuotas y deudas se llevan '+pct(de),'Más del 30% en deudas es riesgoso. No tomes cuotas nuevas y cancelá primero la de mayor interés.'); }
@@ -270,7 +270,7 @@ function render(){
   var res=emp?A.resOp:A.ahorro;
   h+='<div class="kpis">'+
     kpi('Ingresos',money(c.ing), emp?(money(c.ingPed)+' de pedidos web · '+money(c.ingManual)+' cargados'):'lo que entró este mes')+
-    kpi(emp?'Egresos operativos':'Gastos',money(emp?A.operativos:A.gastos), 'incluye '+money(c.fijos)+' de costos fijos')+
+    kpi(emp?'Egresos operativos':'Gastos',money(emp?A.operativos:A.gastos), 'incluye '+money(c.fijos)+(emp?' de costos fijos':' de gastos fijos'))+
     kpi(emp?'Ganancia operativa':'Te queda',money(res), emp?('margen '+pct(A.margen)):('ahorro '+pct(A.tasa)), res>=0?'pos':'neg')+
     (emp?kpi('Después de retiros e inversión',money(A.resFinal),'retiros '+money(A.retiros)+' · inversión '+money(A.inversion),A.resFinal>=0?'pos':'neg')
         :kpi('Fondo de emergencia',isFinite(A.fondoMeses)?A.fondoMeses.toFixed(1)+' meses':'—','con '+money(D.cfg.ahorro_actual)+' ahorrados'))+'</div>';
